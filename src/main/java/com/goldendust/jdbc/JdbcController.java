@@ -2,6 +2,7 @@ package com.goldendust.jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -90,7 +91,37 @@ public class JdbcController {
 			model.addAttribute("error", "탈퇴에 실패하였습니다. 아이디를 다시 확인해주세요.");
 			return "withdraw";
 		}
+	}
+	
+	@RequestMapping(value="/signin")
+	public String goToSignin() {
+		return "signin";
+	}
+	
+	@RequestMapping(value="/idsearch")
+	public String goToIdSearch() {
+		return "idSearch";
+	}
+	
+	@RequestMapping(value="/idsearch/result")
+	public String searchId(HttpServletRequest request, Model model) {
 		
+		MemberDao memDao = new MemberDao();
+		String email = request.getParameter("searchEmail");
+		Optional<MemberDto> memberToFindOptional = Optional.ofNullable(memDao.findByEmail(email));
+		
+		if(memberToFindOptional.isPresent()) {
+			MemberDto memberFound = memberToFindOptional.get();
+			model.addAttribute("mid", memberFound.getMid());
+			return "idSearchSuccess";
+		} else {
+			return "idSearchFailed";
+		}
+	}
+	
+	@RequestMapping(value="/pwsearch")
+	public String goToPwSearch() {
+		return "pwSearch";
 	}
 
 }

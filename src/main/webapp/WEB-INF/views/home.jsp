@@ -16,6 +16,7 @@
 	<table>
 		<tr>
 			<td><a href="join">회원 가입</a></td>
+			<td><a href="signin">로그인</a></td>
 			<td><a href="delete_account">회원 탈퇴</a></td>
 		</tr>
 	</table>

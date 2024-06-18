@@ -11,6 +11,14 @@ public class MemberDto {
 	
 	public MemberDto() {}
 	
+	public MemberDto(String mid, String mpw, String mname, String memail) {
+		this.mid = mid;
+		this.mpw = mpw;
+		this.mname = mname;
+		this.memail = memail;
+		//this.mdate = mdate;
+	}
+	
 	public MemberDto(String mid, String mpw, String mname, String memail, String mdate) {
 		this.mid = mid;
 		this.mpw = mpw;

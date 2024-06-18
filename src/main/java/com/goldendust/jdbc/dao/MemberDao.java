@@ -3,6 +3,9 @@ package com.goldendust.jdbc.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import com.goldendust.jdbc.dto.MemberDto;
 
 public class MemberDao {
 	
@@ -88,5 +91,110 @@ public class MemberDao {
 		
 		return success;
 	}
+	
+	// 3. 회원리스트조회
+	
+	// 4. 회원검색
+	public MemberDto findById(String id) {
+		
+		String sql = "SELECT * FROM members WHERE mid = ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		MemberDto memberToFind = null;
+		
+		try {
+			Class.forName(driverName);
+			conn = DriverManager.getConnection(url, username, password);
+			ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, id);
+			
+			rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				System.out.println(rs);
+				String mid = rs.getString("mid");
+				String mpw = rs.getString("mpw");
+				String mname = rs.getString("mname");
+				String memail = rs.getString("memail");
+				String mdate = rs.getString("mdate");
+				
+				memberToFind = new MemberDto(mid, mpw, mname, memail, mdate);
+			} 
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return memberToFind;
+		
+	}
+	
+	public MemberDto findByEmail(String email) {
+		
+		String sql = "SELECT * FROM members WHERE memail= ?";
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		MemberDto memberToFind = null;
+		
+		try {
+			Class.forName(driverName);
+			conn = DriverManager.getConnection(url, username, password);
+			ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, email);
+			
+			rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				System.out.println(rs);
+				String mid = rs.getString("mid");
+				String mpw = rs.getString("mpw");
+				String mname = rs.getString("mname");
+				String memail = rs.getString("memail");
+				String mdate = rs.getString("mdate");
+				
+				memberToFind = new MemberDto(mid, mpw, mname, memail, mdate);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return memberToFind;
+		
+	}
+	
+	// 5. 회원정보수정
 
 }

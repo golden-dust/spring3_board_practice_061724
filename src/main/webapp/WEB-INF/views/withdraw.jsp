@@ -10,6 +10,7 @@
 	<h2>회원 탈퇴</h2>
 	<hr>
 	<form action="account_deleted">
+		아이디 : 
 		<input type="text" name="mid"> 
 		<input type="submit" value="탈퇴">
 	</form>
