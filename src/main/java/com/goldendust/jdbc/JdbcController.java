@@ -123,5 +123,28 @@ public class JdbcController {
 	public String goToPwSearch() {
 		return "pwSearch";
 	}
+	
+	@RequestMapping(value="/pwsearch/result")
+	public String searchPw(HttpServletRequest request, Model model) {
+		
+		MemberDao memDao = new MemberDao();
+		String id = request.getParameter("searchId");
+		String email = request.getParameter("searchEmail");
+		Optional<MemberDto> memberToFindOptional = Optional.ofNullable(memDao.findById(id));
+		
+		if(memberToFindOptional.isPresent()) {
+			MemberDto memberFound = memberToFindOptional.get();
+			if(email.equals(memberFound.getMemail())) {
+				model.addAttribute("mpw", memberFound.getMpw());
+				return "pwSearchSuccess";
+			} else {
+				model.addAttribute("error", "아이디와 이메일이 일치하지 않습니다.");
+				return "pwSearchFailed";
+			}
+		} else {
+			model.addAttribute("error", "비밀번호 확인 실패: 아이디를 확인해주세요.");
+			return "pwSearchFailed";
+		}
+	}
 
 }

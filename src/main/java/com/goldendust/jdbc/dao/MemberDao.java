@@ -114,7 +114,6 @@ public class MemberDao {
 			rs = ps.executeQuery();
 			
 			if (rs.next()) {
-				System.out.println(rs);
 				String mid = rs.getString("mid");
 				String mpw = rs.getString("mpw");
 				String mname = rs.getString("mname");
@@ -164,7 +163,6 @@ public class MemberDao {
 			rs = ps.executeQuery();
 			
 			if (rs.next()) {
-				System.out.println(rs);
 				String mid = rs.getString("mid");
 				String mpw = rs.getString("mpw");
 				String mname = rs.getString("mname");
