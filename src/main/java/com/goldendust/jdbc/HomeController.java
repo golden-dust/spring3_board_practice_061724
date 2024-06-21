@@ -36,4 +36,10 @@ public class HomeController {
 		return "home";
 	}
 	
+	@RequestMapping(value ="/home")
+	public String returnHome() {
+		return "redirect:/";
+	}
+	
+	
 }

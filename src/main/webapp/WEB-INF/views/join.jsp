@@ -10,7 +10,7 @@
 	<h2>회원 가입</h2>
 	<hr>
 	<h4>${error }</h4>
-	<form action="joinOk">
+	<form action="joinOk" method="post">
 		<table>
 			<tr>
 				<td>아이디 : </td>
