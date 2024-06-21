@@ -4,9 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Account Deleted</title>
+<title>index</title>
 </head>
 <body>
-	회원 탈퇴 완료
+	
+	<input type="button" value="회원리스트" onclick="javascript:window.location.href='memberlist'">
 </body>
 </html>

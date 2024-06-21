@@ -9,13 +9,22 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.goldendust.jdbc.command.MCommand;
+import com.goldendust.jdbc.command.MDeleteCommand;
+import com.goldendust.jdbc.command.MJoinCommand;
+import com.goldendust.jdbc.command.MListCommand;
+import com.goldendust.jdbc.command.MSearchCommand;
+import com.goldendust.jdbc.command.MUpdateCommand;
 import com.goldendust.jdbc.dao.MemberDao;
 import com.goldendust.jdbc.dto.MemberDto;
 
 @Controller
 public class JdbcController {
+	
+	MCommand command = null;
 	
 	@RequestMapping(value="/test")
 	public void test() {
@@ -53,20 +62,33 @@ public class JdbcController {
 		return "join";
 	}
 	
-	@RequestMapping(value="/joinOk")
+	@RequestMapping(value="/joinOk", method=RequestMethod.POST)
 	public String joinOk(HttpServletRequest request, Model model) {
 		
-		String mid = request.getParameter("mid");
-		String mpw = request.getParameter("mpw");
-		String mname = request.getParameter("mname");
-		String memail = request.getParameter("memail");
+		// 모델에 리퀘스트 객체 싣기
+		model.addAttribute("request", request);
 		
-		MemberDao memberDao = new MemberDao();
-		int result = memberDao.joinMember(mid, mpw, mname, memail);
+		command = new MJoinCommand();
+		int result = command.execute(model);
+		
+//		try {
+//			request.setCharacterEncoding("utf-8");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		
+//		String mid = request.getParameter("mid");
+//		String mpw = request.getParameter("mpw");
+//		String mname = request.getParameter("mname");
+//		String memail = request.getParameter("memail");
+		
+//		MemberDao memberDao = new MemberDao();
+		
+//		int result = memberDao.joinMember(mid, mpw, mname, memail);
 		
 		if (result == 1) {
-			model.addAttribute("mid", mid);
-			model.addAttribute("mname", mname);
+			model.addAttribute("mid", request.getParameter("mid"));
+			model.addAttribute("mname", request.getParameter("mname"));
 			return "joinOk";
 		} else {
 			model.addAttribute("error", "회원 가입이 실패하였습니다. 다시 시도해주세요.");
@@ -76,20 +98,23 @@ public class JdbcController {
 	
 	@RequestMapping(value="/delete_account")
 	public String goToWithdraw() {
-		return "withdraw";
+		return "deleteAccount";
 	}
 	
 	@RequestMapping(value="/account_deleted")
-	public String deleteAccount(@RequestParam("mid") String mid, Model model) {
-		MemberDao memberToDelete = new MemberDao();
+	public String deleteAccount(HttpServletRequest request , Model model) {
+
+		model.addAttribute("request", request);
 		
-		int result = memberToDelete.deleteMember(mid);
+		command = new MDeleteCommand();
+		
+		int result = command.execute(model);
 		
 		if (result == 1) {
-			return "withdrawOk";
+			return "deleteAccountOk";
 		} else {
-			model.addAttribute("error", "탈퇴에 실패하였습니다. 아이디를 다시 확인해주세요.");
-			return "withdraw";
+			model.addAttribute("error", "탈퇴 실패 : 아이디나 비밀번호를 다시 확인해주세요.");
+			return "deleteAccount";
 		}
 	}
 	
@@ -118,7 +143,7 @@ public class JdbcController {
 			return "idSearchFailed";
 		}
 	}
-	
+
 	@RequestMapping(value="/pwsearch")
 	public String goToPwSearch() {
 		return "pwSearch";
@@ -145,6 +170,54 @@ public class JdbcController {
 			model.addAttribute("error", "비밀번호 확인 실패: 아이디를 확인해주세요.");
 			return "pwSearchFailed";
 		}
+	}
+	
+	@RequestMapping(value="/memberSearch")
+	public String memberSearch() {
+		return "memberSearch";
+	}
+	
+	@RequestMapping(value="/memberSearch/result")
+	public String memberSearchOk(HttpServletRequest request, Model model) {
+		
+		model.addAttribute("request", request);
+	
+		command = new MSearchCommand();
+		command.execute(model);
+		
+		return "memberSearchOk";
+
+	}
+	
+	@RequestMapping(value="/memberInfoUpdated")
+	public String updateMember(HttpServletRequest request, Model model) {
+		
+		int result;
+		
+		command = new MUpdateCommand();
+		result = command.execute(model);
+		
+		if (result == 1) {
+			command = new MSearchCommand();
+			command.execute(model);
+			return "memberUpdateOk";
+		} else {
+			return "memberSearch";
+		}
+	}
+	
+	@RequestMapping(value="/memberlist")
+	public String list(Model model) {
+		
+		command = new MListCommand();
+		command.execute(model);
+		
+		return "memberList";
+	}
+	
+	@RequestMapping(value="/index")	// value="/" 첫페이지 인덱스
+	public String index() {
+		return "index";
 	}
 
 }

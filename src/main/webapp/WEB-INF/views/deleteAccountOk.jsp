@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ID found</title>
+<title>Account Deleted</title>
 </head>
 <body>
-	회원님의 아이디는 '${mid }'입니다.<br><br>
-	<a href="signin">로그인 하기</a>
+	회원 탈퇴 완료<br><br>
+	<a href="home">홈으로 돌아가기</a>
 </body>
 </html>
