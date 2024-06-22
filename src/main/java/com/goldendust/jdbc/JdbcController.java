@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.goldendust.jdbc.command.MCommand;
 import com.goldendust.jdbc.command.MDeleteCommand;
@@ -101,7 +100,7 @@ public class JdbcController {
 		return "deleteAccount";
 	}
 	
-	@RequestMapping(value="/account_deleted")
+	@RequestMapping(value="/account_deleted", method=RequestMethod.POST)
 	public String deleteAccount(HttpServletRequest request , Model model) {
 
 		model.addAttribute("request", request);
@@ -128,7 +127,7 @@ public class JdbcController {
 		return "idSearch";
 	}
 	
-	@RequestMapping(value="/idsearch/result")
+	@RequestMapping(value="/idsearch_result")
 	public String searchId(HttpServletRequest request, Model model) {
 		
 		MemberDao memDao = new MemberDao();
@@ -155,7 +154,7 @@ public class JdbcController {
 		return "pwSearch";
 	}
 	
-	@RequestMapping(value="/pwsearch/result")
+	@RequestMapping(value="/pwsearch_result")
 	public String searchPw(HttpServletRequest request, Model model) {
 		
 		MemberDao memDao = new MemberDao();
@@ -169,7 +168,7 @@ public class JdbcController {
 				model.addAttribute("mpw", memberFound.getMpw());
 				return "pwSearchSuccess";
 			} else {
-				model.addAttribute("error", "아이디와 이메일이 일치하지 않습니다.");
+				model.addAttribute("error", "이메일이 일치하지 않습니다.");
 				return "pwSearchFailed";
 			}
 		} else {
@@ -183,7 +182,7 @@ public class JdbcController {
 		return "memberSearch";
 	}
 	
-	@RequestMapping(value="/memberSearch/result")
+	@RequestMapping(value="/memberSearchResult")
 	public String memberSearchOk(HttpServletRequest request, Model model) {
 		
 		model.addAttribute("request", request);
@@ -195,11 +194,12 @@ public class JdbcController {
 
 	}
 	
-	@RequestMapping(value="/memberInfoUpdated")
+	@RequestMapping(value="/memberInfoUpdated", method=RequestMethod.POST)
 	public String updateMember(HttpServletRequest request, Model model) {
 		
 		int result;
 		
+		model.addAttribute("request", request);
 		command = new MUpdateCommand();
 		result = command.execute(model);
 		
@@ -207,9 +207,8 @@ public class JdbcController {
 			command = new MSearchCommand();
 			command.execute(model);
 			return "memberUpdateOk";
-		} else {
-			return "memberSearch";
-		}
+		} 
+		return "memberSearch";
 	}
 	
 	@RequestMapping(value="/memberlist")
@@ -220,10 +219,10 @@ public class JdbcController {
 		
 		return "memberList";
 	}
-	
-	@RequestMapping(value="/index")	// value="/" 첫페이지 인덱스
-	public String index() {
-		return "index";
-	}
+//	
+//	@RequestMapping(value="/index")	// value="/" 첫페이지 인덱스
+//	public String index() {
+//		return "index";
+//	}
 
 }
