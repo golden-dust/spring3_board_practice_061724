@@ -204,7 +204,7 @@ public class MemberDao {
 	}
 	
 	// 5. 회원정보수정
-	public int updateMember(String mid, String mname, String memail, String mpw) {
+	public int updateMember(String mid, String mname, String memail) {
 		
 		String sql = "UPDATE members SET mname=?, memail=? WHERE mid=?";
 		
@@ -213,31 +213,28 @@ public class MemberDao {
 		int result = 0;
 		MemberDto member = findById(mid);
 		
-		if (mpw.equals(member.getMpw())) {
+		try {
+			Class.forName(driverName);
+			conn = DriverManager.getConnection(url, username, password);
+			ps = conn.prepareStatement(sql);
 			
+			ps.setString(1, mname);
+			ps.setString(2, memail);
+			ps.setString(3, mid);
+			
+			result = ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
 			try {
-				Class.forName(driverName);
-				conn = DriverManager.getConnection(url, username, password);
-				ps = conn.prepareStatement(sql);
-				
-				ps.setString(1, mname);
-				ps.setString(2, memail);
-				ps.setString(3, mid);
-				
-				result = ps.executeUpdate();
+				if (ps != null) {
+					ps.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
-			} finally {
-				try {
-					if (ps != null) {
-						ps.close();
-					}
-					if (conn != null) {
-						conn.close();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 		}
 		return result;

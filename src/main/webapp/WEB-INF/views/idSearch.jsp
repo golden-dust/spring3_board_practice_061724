@@ -8,7 +8,7 @@
 </head>
 <body>
 	회원 정보 찾기 테스트
-	<form action="idsearch/result">
+	<form action="idsearch_result">
 		이메일 : <input type="text" name="searchEmail"><br>
 		<a href="pwsearch">비밀번호 찾기</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="submit" value="search">

@@ -24,7 +24,7 @@
 		<c:forEach items="${memberList}" var="member">
 		<tr>
 			<td><c:out value="${count}" />. </td>
-			<td><a href="memberSearch/result?mid=${member.mid}">${member.mid}</a></td>
+			<td><a href="memberSearchResult?mid=${member.mid}">${member.mid}</a></td>
 			<td>${member.mname}</td>
 			<td>${member.memail}</td>
 			<td>${member.mdate}</td>
