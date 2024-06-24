@@ -101,7 +101,7 @@ public class JdbcController {
 	}
 	
 
-	@RequestMapping(value="/account_deleted", method=RequestMethod.POST)
+	@RequestMapping(value="/account_deleted")
 	public String deleteAccount(HttpServletRequest request , Model model) {
 
 		model.addAttribute("request", request);

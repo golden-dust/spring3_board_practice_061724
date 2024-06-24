@@ -21,12 +21,13 @@ public class MDeleteCommand implements MCommand {
 			int result = 0;
 			
 			String mid = request.getParameter("mid");
-			String mpw = request.getParameter("mpw");
+//			String mpw = request.getParameter("mpw");
 						
 			MemberDao memberDao = new MemberDao();
 			
 			MemberDto memberToDelete = memberDao.findById(mid);
-			if ((memberToDelete != null) && (mpw.equals(memberToDelete.getMpw()))) {
+//			if ((memberToDelete != null) && (mpw.equals(memberToDelete.getMpw()))) {
+			if (memberToDelete != null) {
 				result = memberDao.deleteMember(mid);
 			}
 			

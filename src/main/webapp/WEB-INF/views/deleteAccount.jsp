@@ -11,7 +11,7 @@
 	<hr>
 	<form action="account_deleted">
 		아이디 : <input type="text" name="mid"><br>
-		비밀번호 : <input type="password" = name="mpw"> 
+		<!-- 비밀번호 : <input type="password" = name="mpw">  -->
 		<input type="submit" value="탈퇴">
 	</form>
 	${error }
