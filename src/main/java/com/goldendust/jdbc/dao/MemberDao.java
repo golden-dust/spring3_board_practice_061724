@@ -187,6 +187,44 @@ public class MemberDao {
 		return memberToFind;
 	}
 	
+	public int isAvailable(String id) {
+		String sql = "SELECT * FROM members WHERE mid=?";
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int result = 0;
+		try {
+			Class.forName(driverName);
+			conn = DriverManager.getConnection(url, username, password);
+			ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, id);
+			
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				result = 1;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+	
 	public MemberDto findById(String id) {
 		
 		String sql = "SELECT * FROM members WHERE mid = ?";

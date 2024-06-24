@@ -14,23 +14,28 @@ public class MDeleteCommand implements MCommand {
 	@Override
 	public int execute(Model model) {
 			
-			// 일반적 방법으로 빼 올 수 없고, Map으로 빼 줘야 함
-			Map<String, Object> map = model.asMap();
-			HttpServletRequest request = (HttpServletRequest) map.get("request");
-			
-			int result = 0;
-			
-			String mid = request.getParameter("mid");
-//			String mpw = request.getParameter("mpw");
-						
+		int result = 0;
+		
+		// 일반적 방법으로 빼 올 수 없고, Map으로 빼 줘야 함
+		Map<String, Object> map = model.asMap();
+		HttpServletRequest request = (HttpServletRequest) map.get("request");
+		
+		String mid = request.getParameter("mid");
+		String mpw = request.getParameter("mpw");
+		
+		int pwchecked = 0;
+		
+		// 전달받은 패스워드 파라미터 null 값 확인
+		if (mpw != null) {
+			PwCheckCommand pwcommand = new PwCheckCommand();
+			pwchecked = pwcommand.execute(model);
+		}
+		
+		// 파라미터 확인 후 입력pw와 db pw 일치 여부 확인 
+		if (pwchecked == 1) {		
 			MemberDao memberDao = new MemberDao();
-			
-			MemberDto memberToDelete = memberDao.findById(mid);
-//			if ((memberToDelete != null) && (mpw.equals(memberToDelete.getMpw()))) {
-			if (memberToDelete != null) {
-				result = memberDao.deleteMember(mid);
-			}
-			
-			return result;
+			result = memberDao.deleteMember(mid);
+		}
+		return result;
 	}
 }
